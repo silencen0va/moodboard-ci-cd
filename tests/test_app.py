@@ -25,11 +25,17 @@ def test_favorite_route(client):
     response = client.post(
         "/favorite",
         json={
-            "image": {
-                "id": "test-image",
-                "url": "https://example.com/image.jpg"
-            }
+            "id": "test-image",
+            "url": "https://example.com/image.jpg",
+            "link": "https://example.com",
+            "user": "Test User",
+            "likes": 10,
+            "alt": "Test image"
         }
     )
 
     assert response.status_code == 200
+
+    data = response.get_json()
+    assert data["status"] == "added"
+    assert data["favorites_count"] == 1
